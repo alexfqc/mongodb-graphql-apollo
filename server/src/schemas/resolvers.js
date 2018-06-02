@@ -4,8 +4,12 @@ export default {
   },
   Mutation: {
     createPost: async (root, data, {mongo: {Posts}}) => {
-      await Posts.insert(data);
-      return data;
+      const response = await Posts.insert(data);
+      return Object.assign({id: response.insertedIds[0]}, data);
     },
+  },
+
+  Post: {
+    id: root => root._id || root.id,
   },
 };

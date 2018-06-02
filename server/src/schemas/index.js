@@ -3,6 +3,7 @@ import resolvers from './resolvers';
 
 const typeDefs = `
   type Post {
+    id: ID!
     title: String
     description: String
   }
