@@ -10,6 +10,10 @@ const typeDefs = `
   type Query {
     allPosts: [Post]!
   }
+
+  type Mutation {
+    createPost(title: String!, description: String!): Post
+  }
 `;
 
 export default makeExecutableSchema({typeDefs, resolvers});
