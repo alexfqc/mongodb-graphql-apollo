@@ -1,0 +1,7 @@
+view/node_modules
+view/dist
+server/node_modules
+data
+server/src/db/*.csv
+**/*/.DS_Store
+.DS_Store
