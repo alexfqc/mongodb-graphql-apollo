@@ -10,6 +10,11 @@ module.exports = {
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
+      {
+        test: /\.css$/,
+        include: path.resolve(__dirname, './node_modules/bootstrap/dist/css/'),
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: {

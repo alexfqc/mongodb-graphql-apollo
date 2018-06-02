@@ -1,5 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import GET_POSTS from '../../utils/queries';
 
 const PostsContainer = () => (
@@ -9,14 +10,9 @@ const PostsContainer = () => (
       if (error) return `Error! ${error.message}`;
 
       return (
-        <div>
-          {data.allPosts.map(post => (
-            <div key={post.id}>
-              <div>{post.title}</div>
-              <div>{post.description}</div>
-            </div>
-          ))}
-        </div>
+        <ListGroup>
+          {data.allPosts.map(post => <ListGroupItem key={post.id}>{post.title}</ListGroupItem>)}
+        </ListGroup>
       );
     }}
   </Query>
