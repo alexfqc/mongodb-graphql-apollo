@@ -7,4 +7,13 @@ services:
       - ./server:/usr/src/app
     ports:
       - "4000:4000"
+    depends_on:
+      - "mongo"
     command: nodemon /usr/src/app/src/server.js
+
+  mongo:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    volumes:
+      - './data:/data/db'
