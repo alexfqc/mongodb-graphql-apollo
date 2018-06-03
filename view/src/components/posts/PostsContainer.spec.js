@@ -4,7 +4,7 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloProvider, graphql } from 'react-apollo';
 import { createHttpLink } from 'apollo-link-http';
 import MockNetworkInterface from 'apollo-mocknetworkinterface';
-import { renderIntoDocument, cleanup } from 'react-testing-library';
+import renderer from 'react-test-renderer';
 import query from '../../utils/queries';
 import PostsContainer from './PostsContainer';
 
@@ -28,16 +28,27 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-afterEach(cleanup);
+const ApolloHoc = Component => (
+  <ApolloProvider client={client}>
+    <Component />
+  </ApolloProvider>
+);
 
-it('should render without exploding', (done) => {
-  const component = (
-    <ApolloProvider client={client}>
-      <div>
-        <TestComponentWithApollo />
-      </div>
-    </ApolloProvider>
-  );
-  renderIntoDocument(component);
-  done();
+it('Integration test', (done) => {
+  const component = renderer.create(ApolloHoc(TestComponentWithApollo));
+
+  // first is loading
+  const loading = component.toJSON();
+  expect(loading).toMatch('Loading...');
+
+  // wait until data arrive
+  setTimeout(() => {
+    try {
+      const tree2 = component.toJSON();
+      expect(tree2.children[0].children).toMatchObject(['title']);
+    } catch (e) {
+      return done.fail(e);
+    }
+    return done();
+  }, 101);
 });
