@@ -1,16 +1,9 @@
-import React from 'react';
-import { InMemoryCache } from 'apollo-boost';
-import { ApolloClient } from 'apollo-client';
-import { ApolloProvider, graphql } from 'react-apollo';
-import { createHttpLink } from 'apollo-link-http';
-import MockNetworkInterface from 'apollo-mocknetworkinterface';
 import renderer from 'react-test-renderer';
 import query from '../../utils/queries';
 import PostsContainer from './PostsContainer';
+import ApolloMock from '../../../test/helpers/apolloMock';
 
-const TestComponentWithApollo = graphql(query)(PostsContainer);
-
-const createResponse = () => ({
+const mockedResponse = {
   data: {
     allPosts: [
       {
@@ -21,21 +14,12 @@ const createResponse = () => ({
       },
     ],
   },
-});
-const mockedNetworkFetch = MockNetworkInterface(createResponse, { timeout: 100 });
-const client = new ApolloClient({
-  link: createHttpLink({ uri: 'http://localhost:4000', fetch: mockedNetworkFetch }),
-  cache: new InMemoryCache(),
-});
+};
 
-const ApolloHoc = Component => (
-  <ApolloProvider client={client}>
-    <Component />
-  </ApolloProvider>
-);
+const apolloComponent = ApolloMock(PostsContainer, query, mockedResponse);
 
 it('Integration test', (done) => {
-  const component = renderer.create(ApolloHoc(TestComponentWithApollo));
+  const component = renderer.create(apolloComponent);
 
   // first is loading
   const loading = component.toJSON();
