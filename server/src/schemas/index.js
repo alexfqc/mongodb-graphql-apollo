@@ -10,6 +10,7 @@ const typeDefs = `
 
   type Query {
     allPosts: [Post]!
+    post(id: ID!): Post!
   }
 
   type Mutation {
