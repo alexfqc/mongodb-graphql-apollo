@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'reactstrap';
-import PostsContainer from './posts/PostsContainer';
+import Main from './main/Main';
 
-const App = () => <Container><PostsContainer /></Container>;
+const App = () => <Container><Main /></Container>;
 
 export default App;
