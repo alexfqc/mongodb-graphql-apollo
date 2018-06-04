@@ -18,21 +18,28 @@ const mockedResponse = {
 
 const apolloComponent = ApolloMock(PostsContainer, query, mockedResponse);
 
-it('Integration test', (done) => {
-  const component = renderer.create(apolloComponent);
+describe('Integration test', () => {
+  let component;
+  beforeEach(() => {
+    component = renderer.create(apolloComponent);
+  });
 
-  // first is loading
-  const loading = component.toJSON();
-  expect(loading).toMatch('Loading...');
+  it('should render loading correctly', () => {
+    // first is loading
+    const loading = component.toJSON();
+    expect(loading).toMatch('Loading...');
+  });
 
-  // wait until data arrive
-  setTimeout(() => {
-    try {
-      const tree2 = component.toJSON();
-      expect(tree2.children[0].children).toMatchObject(['title']);
-    } catch (e) {
-      return done.fail(e);
-    }
-    return done();
-  }, 101);
+  it('should render posts correctly', (done) => {
+    // wait until data arrive
+    setTimeout(() => {
+      try {
+        const tree2 = component.toJSON();
+        expect(tree2.children[0].children).toMatchObject(['title']);
+      } catch (e) {
+        return done.fail(e);
+      }
+      return done();
+    }, 101);
+  });
 });
